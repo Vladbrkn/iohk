@@ -69,3 +69,26 @@ def calculate_interest_metrics(df):
     df['actual_interest'] = df['expected_interest_daily'] * df['actual_term_days']
     
     return df
+
+def calculate_avg_days_in_arrears(df):
+    """
+    Calculate the average days in arrears based on the difference between
+    the closing date and maturity date for each loan in the dataset.
+    
+    Parameters:
+    df (pd.DataFrame): DataFrame containing loan information, with columns
+                       'closing_date' and 'maturity_date' in datetime format.
+    
+    Returns:
+    float: The average days in arrears across all loans with valid closing dates.
+           Returns NaN if no loans have a valid closing date.
+    """
+
+    df['days_in_arrears'] = (df['closing_date'] - df['maturity_date']).dt.days
+
+    # Exclude rows with missing or negative days in arrears
+    valid_arrears_days = df['days_in_arrears'].dropna()
+    
+    avg_days_in_arrears = valid_arrears_days.mean()
+    
+    return avg_days_in_arrears

@@ -1,0 +1,12 @@
+models:
+  - name: silver_loans
+    description: "Enriched loan data with calculated terms, interest, and arrears metrics."
+    columns:
+      - name: loan_id
+        description: "Unique identifier for each loan."
+      - name: expected_term_days
+        description: "Expected term of the loan in days, calculated based on issue and maturity dates."
+      - name: days_in_arrears
+        description: "Days the loan is overdue, calculated from the maturity date to the closing date."
+      - name: actual_interest
+        description: "Interest earned on the loan based on actual term and expected interest rate."
