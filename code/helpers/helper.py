@@ -35,8 +35,8 @@ def calculate_write_off_rate(df):
     float: The write-off rate as a percentage.
     """
 
-    total_write_off_amount = df['write_off_amount'].sum()
-    total_principal_amount = df['principal_amount'].sum()
+    total_write_off_amount = df['write_off_amount_usd'].sum()
+    total_principal_amount = df['principal_amount_usd'].sum()
     
     if total_principal_amount > 0: 
         write_off_rate = (total_write_off_amount / total_principal_amount) * 100
@@ -62,7 +62,7 @@ def calculate_interest_metrics(df):
     pd.DataFrame: The DataFrame with the added columns 'expected_interest', 'expected_interest_daily', and 'actual_interest'.
     """
 
-    df['expected_interest'] = df['principal_amount'] * df['interest_rate']
+    df['expected_interest'] = df['principal_amount_usd'] * df['interest_rate']
   
     df['expected_interest_daily'] = df['expected_interest'] / df['expected_term_days']
     

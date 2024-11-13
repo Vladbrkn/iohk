@@ -70,7 +70,7 @@ All datasets underwent the same process. Object-type columns that were categoric
 ## Metrics
 
 ### **Data Preparation**:  
-  A copy of the master dataset was created as a working DataFrame, referred to here as `metrics_df`, to perform calculations without altering the original master data.
+  A copy of the master dataset was created as a working DataFrame, referred to here as `metrics_df`, to perform calculations without altering the original master data. The `principal_amount` and `write_off_amount` were both converted to USD so as to ensure that calculations are on the same scale. These were named `columns_usd`.
 
 ### **Helper Functions**:  
   Developed and added helper functions to calculate various metrics, including:
@@ -80,21 +80,21 @@ All datasets underwent the same process. Object-type columns that were categoric
 
 #### **Write-Off Rate Calculation**:
   - While calculating the write-off rate, I found a record with a future maturity date (`loan_id`: VUdfS1VfNDI2NQ==) of `2200-01-20`. This was deemed erroneous and removed.
-  - A helper function was created to automate the write-off rate calculation. Only the latest snapshot for each `loan_id` was retained, as only the final `write_off_amount` and `principal_amount` are needed.
+  - A helper function was created to automate the write-off rate calculation. Only the latest snapshot for each `loan_id` was retained, as only the final `write_off_amount_usd` and `principal_amount_usd` are needed.
   - Write-off rate formula:
   $$ \text{Write-Off Rate} = \left( \frac{\text{Total Write-Offs}}{\text{Total Charges}} \right) \times 100 $$
   - **Total Write-Offs**: The sum of write off amounts.
-  - **Total Charges**: Represented by the `principal_amount` of the loans.
+  - **Total Charges**: Represented by the `principal_amount_usd` of the loans.
 
 ### **Gross Yield Calculation**:
   - Gross yield was calculated as follows:
   $$ \text{Gross Yield} = \left( \frac{\text{Gross Income}}{\text{Total Investment}} \right) \times 100 $$
   - **Gross Income**: The total income generated from the loans before expenses.
-  - **Total Investment**: Represented by the `principal_amount` of the loans.
+  - **Total Investment**: Represented by the `principal_amount_usd` of the loans.
 
   - Specifically:
-    - **Total Investment** = `principal_amount`.
-    - **Gross Income** = `principal_amount` * `actual_interest`.
+    - **Total Investment** = `principal_amount_usd`.
+    - **Gross Income** = `principal_amount_usd` * `actual_interest`.
 
 - **Considerations for Interest Calculation**:
   - Given that `interest_rate` represents the expected interest rate over the full loan term and that penalties and fees are typically excluded from gross yield, the following approach was taken:
@@ -125,6 +125,39 @@ All datasets underwent the same process. Object-type columns that were categoric
   For example, `loan_id`: `S0VfS1VfMjg4MjI0` exhibits this issue.
 
   Due to this inconsistency, I have decided to calculate average days in arrears as the difference between the `closing_date` and the `maturity_date`. This approach is based on the assumption that the loan should be considered in arrears from the point it matures until it is either closed or written off.
+
+## Actionable Insights
+
+### **Benchmarking CashConnect**
+I benchmark SwiftLoan against CashConnect, as CashConnect has been deemed a solid investment. The properties of CashConnect that are relevant to this comparison include:
+- CashConnect offers loans in the range of $100-$200.
+- The typical loan term is 30 days.
+- After three years of operation, CashConnect has grown its loan book to $14.2M.
+
+Using the available data and preprocessing methods, I have gathered the following insights about SwiftLoan:
+
+### **Loan Book Size and Currency Conversion**
+When calculating SwiftLoan’s loan book size, it is important to note that currency conversions are based on current exchange rates as of 13/11/2024, rather than the historical exchange rates at the respective times of the loan issuance. The exchange rates are as follows:
+- KES (Kenyan Shillings): 1 KES = 0.0077 USD
+- UGX (Ugandan Shillings): 1 UGX = 0.00027 USD
+
+### **Portfolio Breakdown**
+SwiftLoan’s portfolio consists of both KES and UGX loans, with the following distributions:
+- UGX Loans account for 6.70% of the total portfolio, equating to USD 3,342,087.70.
+- KES Loans account for the remaining portion of the portfolio, totaling USD 46,732,281.64.
+
+### **Average Loan Size and Term**
+The average loan size in SwiftLoan is approximately USD 115, with a typical loan term of 30 days.
+
+### **Loan Book Size Estimate**
+Based on available data, SwiftLoan is approximately 9 months old and has amassed a loan book valued at roughly USD 50M.
+
+### Additional Insights
+- SwiftLoan has a majority exposure to female borrowers.
+- The Proloan product exhibits the most outliers in terms of days in arrears.
+- Both Kenyan males and females generally have a lower average number of days in arrears compared to their Ugandan counterparts.
+- Males in both Kenya and Uganda tend to have a higher average principal loan amount in USD compared to their female counterparts.
+- On average, write-offs are higher for Kenya, with a greater sum of write-offs attributed to Kenyan female customers. However, it's important to note that there is a higher concentration of loans in Kenya, accounting for 67.4% of the total loan book.
 
 ## Mock dbt-SQL Files
 
@@ -165,6 +198,5 @@ To ensure data quality and consistency, dbt allows you to define tests on your m
 - **Accepted Values**: Validates logical relationships, such as `maturity_date` being greater than or equal to `issue_date`.
 
  
- *To do:
- - dbt documentation 
+ *To do: 
  - great_expectations
