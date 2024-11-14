@@ -153,11 +153,26 @@ The average loan size in SwiftLoan is approximately USD 115, with a typical loan
 Based on available data, SwiftLoan is approximately 9 months old and has amassed a loan book valued at roughly USD 50M.
 
 ### Additional Insights
-- SwiftLoan has a majority exposure to female borrowers.
-- The Proloan product exhibits the most outliers in terms of days in arrears.
-- Both Kenyan males and females generally have a lower average number of days in arrears compared to their Ugandan counterparts.
-- Males in both Kenya and Uganda tend to have a higher average principal loan amount in USD compared to their female counterparts.
-- On average, write-offs are higher for Kenya, with a greater sum of write-offs attributed to Kenyan female customers. However, it's important to note that there is a higher concentration of loans in Kenya, accounting for 67.4% of the total loan book.
+
+#### Loan Amount Issued by Issue Date
+- **Insight**: Loan issuance sharply increased beginning in 2022, peaking in 2023, indicating strong growth in demand or lending capacity.
+- **Suggestion**: Closely monitor the performance of recent loans to assess the sustainability of this growth and mitigate potential risks associated with rapid expansion.
+
+#### Gender-Based Borrower Demographics
+- **Insight**: The loan portfolio is predominantly female (67.4%) in Kenya and also leans female in Uganda (61.2%).
+- **Suggestion**: Continue targeted outreach to female borrowers, as they form the majority customer base.
+
+#### Country-Based Arrears Comparison
+- **Insight**: Ugandan borrowers (both male and female) have a higher average number of days in arrears than Kenyan borrowers.
+- **Suggestion**: Investigate factors contributing to higher arrears in Uganda and develop strategies (e.g., stricter pre-qualification checks) to mitigate delayed repayments in this region.
+
+#### Product-Based Arrears
+- **Insight**: The ProLoan product shows the most significant variation in days in arrears, with many outliers.
+- **Suggestion**: Reassess the ProLoan terms, borrower risk profile, or repayment structure to reduce arrears and improve consistency in loan performance.
+
+#### Principal Loan Amount and Gender
+- **Insight**: Male borrowers, on average, receive higher principal amounts than female borrowers in both Kenya and Uganda.
+- **Suggestion**: Consider balancing loan distribution by conducting a gender impact assessment, especially if larger loans are beneficial for business growth or financial stability.
 
 ## Additional Tools for Working with Data
 
