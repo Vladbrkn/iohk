@@ -159,7 +159,34 @@ Based on available data, SwiftLoan is approximately 9 months old and has amassed
 - Males in both Kenya and Uganda tend to have a higher average principal loan amount in USD compared to their female counterparts.
 - On average, write-offs are higher for Kenya, with a greater sum of write-offs attributed to Kenyan female customers. However, it's important to note that there is a higher concentration of loans in Kenya, accounting for 67.4% of the total loan book.
 
-## Mock dbt-SQL Files
+## Additional Tools for Working with Data
+
+### Overview
+
+Data pipelines benefit from incorporating tools that enhance both data transformation and validation. Two notable tools in this domain are **dbt** and **Great Expectations**, each bringing unique strengths to a data engineering workflow:
+
+- **dbt (Data Build Tool)**: dbt is primarily used for transforming and modeling data within a data warehouse. It allows data teams to structure and document data transformations, while also providing basic data quality testing capabilities.
+
+- **Great Expectations**: Great Expectations is a robust tool focused on data validation and testing. It offers extensive features for monitoring and enforcing data quality standards over time, making it ideal for validating data as it flows through the pipeline.
+
+### Comparison of dbt and Great Expectations
+
+| Feature                      | dbt                                                     | Great Expectations                                      |
+|------------------------------|---------------------------------------------------------|---------------------------------------------------------|
+| **Primary Purpose**          | Data transformation and modeling                        | Data validation and testing                             |
+| **Data Quality Testing**     | Supports basic tests (e.g., not null, unique)           | Extensive validation options, including comparisons     |
+| **Transformation Capabilities** | Full SQL-based transformation, building models          | Minimal transformation; focuses on validation           |
+| **Data Lineage**             | Creates lineage graphs to show dependencies             | Not available                                           |
+| **Documentation Generation** | Generates data model docs                               | Generates validation documentation (Data Docs)          |
+| **Best for**                 | Structured data pipelines, analytical workflows        | Data quality checks, monitoring, and alerting           |
+
+### When to Use Great Expectations with or instead of dbt
+
+These tools can complement each other in a data pipeline, with dbt handling transformation and modeling, and Great Expectations providing advanced validation. If dbt is unavailable, Great Expectations offers an alternative for conducting data quality checks, though it may lack some of dbt's transformation and orchestration functionalities.
+
+By combining dbt’s transformation capabilities with Great Expectations’ validation, you can ensure data quality at every stage in your pipeline, from raw to final analytical datasets.
+
+## dbt
 
 I have added mock dbt-SQL files to this documentation to demonstrate how the data modeling process might look in dbt. These files serve as a representation of how the SQL queries could be structured in a dbt project. Since none of the SQL queries have been validated, these are intended to be seen as pseudo-code or templates for the potential production-ready code and not final implementations.
 
@@ -197,6 +224,20 @@ To ensure data quality and consistency, dbt allows you to define tests on your m
 - **Not Null Constraints**: Ensures critical columns, like `principal_amount` and `loan_id`, are populated.
 - **Accepted Values**: Validates logical relationships, such as `maturity_date` being greater than or equal to `issue_date`.
 
- 
- *To do: 
- - great_expectations
+## Great Expectations
+
+### How Great Expectations Works
+
+Great Expectations operates by creating **expectation suites**—sets of validation rules—on your datasets. When run, these suites validate data quality, producing reports that highlight which tests pass or fail.
+
+Key components of Great Expectations:
+
+1. **Expectations**: Defined checks that confirm data quality (e.g., not null, unique values, range checks).
+2. **Data Context**: Configuration files that connect Great Expectations to your data sources.
+3. **Validation Results**: Logs of test results with a summary of passed/failed expectations.
+4. **Data Docs**: Auto-generated documentation in HTML format that visualizes validation results, helping you monitor data quality over time.
+
+### HTML Reporting with Data Docs
+
+Great Expectations produces **Data Docs**, an HTML report or webpage where you can view the results of all data validations. This includes details on each expectation that has been run, highlighting both passed and failed tests. Data Docs provide a clear, interactive interface for monitoring data quality, making it easy to identify any issues or failed validations in your dataset.
+
